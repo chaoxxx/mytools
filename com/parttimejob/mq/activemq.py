@@ -11,7 +11,7 @@ queue_name = '/queue/javaqueue'
 topic_name = '/topic/javatopic'
 listener_name = 'javaListener'
 
-ip = '207.246.86.232'
+ip = '127.0.0.1'
 port = 61613
 
 
