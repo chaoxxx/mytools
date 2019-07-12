@@ -1,10 +1,11 @@
 # coding=utf-8
 # 一品威客兼职数据抓取
-import datetime
+import json
 import sys
+import time
 
+import jsonpath
 import requests
-from bs4 import BeautifulSoup
 
 from com.parttimejob.db.mysqlclient import MysqlClient
 
@@ -14,36 +15,31 @@ def parse(demands, key_word, webtype):
     mysql_client = MysqlClient()
 
     for demand in demands:
+        detail_url = "https://codemart.com/project/"+str(demand["id"])
         try:
-            detail_url = demand["href"]
-            detail_html = requests.get(detail_url)
-            soup = BeautifulSoup(detail_html.text, 'lxml')
-
-            con = soup.find("div", attrs={"class": "tasktopdet"})
-
             # 发包人
-            publish_user = con.find("div", attrs={"class": "task-user-header"}).find("span").get_text()
+            publish_user = "未知用户"
 
             # 金额
-            amt = con.find("div", attrs={"class": "task_user_info"}).find("span", attrs={"class": "nummoney f_l"}).find(
-                "span").get_text()
+            amt = demand['price']
 
             # 任务名
-            title = con.find("div", attrs={"class": "task_user_info"}).find("h1").get_text()
+            title = demand['name']
 
             # 任务信息
-            content = con.find("div", attrs={"class": "task-info-content"}).get_text()
+            content = demand['description']
 
             # 任务发布时间
-            user_info_action = con.find("div", attrs={"class": "task-user-info-action"}).find_all("span", attrs={
-                "class": "dib_vm"})
-            publish_time = user_info_action[0].get_text()
+            publish_time = demand['pubTime']
+            timeStamp = float(int(publish_time) / 1000)
+
+            timeArray = time.localtime(timeStamp)
+            otherStyleTime = time.strftime("%Y-%m-%d %H:%M", timeArray)
+
 
             details = [title, '0', content]
 
-            nowTime_str = datetime.datetime.now().strftime('%H:%M')
-
-            result = mysql_client.insert(detail_url, amt, publish_user + "发布于" + publish_time + " " + nowTime_str,
+            result = mysql_client.insert(detail_url, amt, publish_user + "发布于" + otherStyleTime,
                                          details,
                                          key_word, webtype)
 
@@ -52,7 +48,7 @@ def parse(demands, key_word, webtype):
 
         except Exception as e:
             print(str(e))
-            print("error:" + demand["href"])
+            print("error:" + detail_url)
 
     mysql_client.destory()
 
@@ -60,7 +56,7 @@ def parse(demands, key_word, webtype):
 if __name__ == '__main__':
 
     keyword = ''
-    webtype = '一品威客'
+    webtype = '码市'
 
     try:
         if not sys.argv[1] is None:
@@ -72,19 +68,32 @@ if __name__ == '__main__':
 
     currentpage = 1
 
-    url = "https://codemart.com/projects?name="+keyword+"&page="+str(currentpage)
-    strhtml = requests.get(url)
-    soup = BeautifulSoup(strhtml.text, 'lxml')
-    total_pages = soup.find("div", attrs={"class": "page pt_15 pb_15"}).find("span").get_text()
-    x = total_pages.split("/", 1)
-    total = x[1].replace("页", "").strip()
+    url = "https://codemart.com/api/project?name=" + keyword + "&page=" + str(currentpage)
+
+    headers = {'Accept': 'application/json',
+               'Accept-Encoding': 'gzip,deflate,br',
+               'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+               'Connection': 'keep-alive',
+               'Host': 'codemart.com',
+               'Referer': 'https://codemart.com/projects',
+               'User-Agent': 'Mozilla/5.0(WindowsNT10.0;Win64;x64)AppleWebKit/537.36(KHTML,likeGecko)Chrome/75.0.3770.100Safari/537.36'}
+
+    strhtml = requests.get(url, params=keyword, headers=headers, timeout=3)
+    c = strhtml.content
+    unicodestr = json.loads(c)
+
+    res = jsonpath.jsonpath(unicodestr, '$.pager.totalPage')
+    total = res[0]
 
     while int(currentpage) <= int(total):
-        url = "http://www.epwk.com/task/o7/page" + str(currentpage) + ".html?k=" + keyword
-        strhtml = requests.get(url)
-        soup = BeautifulSoup(strhtml.text, 'lxml')
-        demands = soup.find("div", attrs={"class": "task_class_list_li"}).find_all("a", attrs={"class": "font14"})
-        if parse(demands, keyword, webtype) == -1:
+        url = "https://codemart.com/api/project?name=" + keyword + "&page=" + str(currentpage)
+
+        strhtml = requests.get(url, params=keyword, headers=headers, timeout=3)
+        c = strhtml.content
+        unicodestr = json.loads(c)
+
+        res = jsonpath.jsonpath(unicodestr, '$.rewards')[0]
+        if parse(res, keyword, webtype) == -1:
             break
 
         currentpage += 1
