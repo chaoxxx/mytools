@@ -13,7 +13,8 @@ import time
 class MysqlClient(object):
 
     def __init__(self):
-        self.db = pymysql.connect("127.0.0.1", "cosmo", "cosmo123456", "cosmo")
+        # self.db = pymysql.connect("127.0.0.1", "cosmo", "cosmo123456", "cosmo")
+        self.db = pymysql.connect("127.0.0.1", "ride_master", "ride_master", "less_credit")
         # 使用cursor()方法获取操作游标
         self.cursor = self.db.cursor()
 
@@ -21,7 +22,7 @@ class MysqlClient(object):
         self.cursor.close()
         self.db.close()
 
-    def insert(self, url, amt, ser_and_publishtime, details, keyword, webtype):
+    def insert(self, url, amt, ser_and_publishtime, details, keyword, webtype,job_no):
         mat = re.search(r"(\d{4}-\d{1,2}-\d{1,2} \d{1,2}:\d{1,2})", ser_and_publishtime)
         publish_time = str(mat.group(0))
         s_time = time.mktime(time.strptime(publish_time, '%Y-%m-%d %H:%M'))
@@ -30,11 +31,11 @@ class MysqlClient(object):
         e_time = time.mktime(time.strptime(nowTime_str, "%Y-%m-%d"))
         diff = e_time - s_time
 
-        if diff > 1 * 24 * 60 * 60:
+        if diff > 10 * 24 * 60 * 60:
             return -1
 
         # 执行sql语句
-        sql = "insert into parttimejobinfo (web_type,job_type,job_url,publish_info,job_title,job_amt,job_desc,publish_time) values('%s','%s','%s','%s','%s','%s','%s','%s')" % (
+        sql = "insert into parttimejobinfo (web_type,job_type,job_url,publish_info,job_title,job_amt,job_desc,publish_time,job_no) values('%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (
             webtype,
             keyword,
             url.strip(),
@@ -42,7 +43,8 @@ class MysqlClient(object):
             str(details[0]).strip(),  # 任务名称
             amt.strip(),
             str(details[2]).strip(),  # 任务描述
-            publish_time
+            publish_time,
+            job_no
         )
 
         try:

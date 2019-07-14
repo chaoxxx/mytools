@@ -41,7 +41,7 @@ def parse(demands, key_word, webtype):
 
             result = mysql_client.insert(detail_url, amt, publish_user + "发布于" + otherStyleTime,
                                          details,
-                                         key_word, webtype)
+                                         key_word, webtype,"codemart-"+str(demand["id"]))
 
             if result == -1:
                 return result

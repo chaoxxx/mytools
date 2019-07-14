@@ -11,3 +11,9 @@ CREATE TABLE `parttimejobinfo` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `job_url_UNIQUE` (`job_url`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE `parttimejobinfo`
+ADD COLUMN `job_no` VARCHAR(100) NULL COMMENT '兼职编号' AFTER `publish_time`,
+ADD UNIQUE INDEX `job_no_UNIQUE` (`job_no` ASC),
+DROP INDEX `job_url_UNIQUE` ;

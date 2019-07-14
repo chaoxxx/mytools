@@ -10,3 +10,4 @@ class Job(object):
         self.desc = ''
         self.publishtime = ''
         self.url = ''
+        self.job_no=''

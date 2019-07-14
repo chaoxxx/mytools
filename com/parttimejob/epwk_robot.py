@@ -16,6 +16,7 @@ def parse(demands, key_word, webtype):
     for demand in demands:
         try:
             detail_url = demand["href"]
+            task_id = str(detail_url).replace("http://www.epwk.com/task/", "", 1).replace("/", "", 1)
             detail_html = requests.get(detail_url)
             soup = BeautifulSoup(detail_html.text, 'lxml')
 
@@ -45,7 +46,7 @@ def parse(demands, key_word, webtype):
 
             result = mysql_client.insert(detail_url, amt, publish_user + "发布于" + publish_time + " " + nowTime_str,
                                          details,
-                                         key_word, webtype)
+                                         key_word, webtype,"epwk-"+task_id)
 
             if result == -1:
                 return result
