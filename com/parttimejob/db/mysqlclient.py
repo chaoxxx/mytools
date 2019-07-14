@@ -1,13 +1,14 @@
 # coding=utf-8
 # 数据库操作
 import datetime
+import json
+import re
+import time
 
 import pymysql
-import re
+
 from com.parttimejob.mq.Job import Job
-from com.parttimejob.mq.activemq import send_to_topic
-import json
-import time
+from com.parttimejob.mq.dev_producer import send_to_topic
 
 
 class MysqlClient(object):
@@ -22,7 +23,7 @@ class MysqlClient(object):
         self.cursor.close()
         self.db.close()
 
-    def insert(self, url, amt, ser_and_publishtime, details, keyword, webtype,job_no):
+    def insert(self, url, amt, ser_and_publishtime, details, keyword, webtype, job_no):
         mat = re.search(r"(\d{4}-\d{1,2}-\d{1,2} \d{1,2}:\d{1,2})", ser_and_publishtime)
         publish_time = str(mat.group(0))
         s_time = time.mktime(time.strptime(publish_time, '%Y-%m-%d %H:%M'))
@@ -61,7 +62,7 @@ class MysqlClient(object):
             job.url = url.strip()
             jobDict = job.__dict__
             person_json = json.dumps(jobDict)  # 转换为json
-            send_to_topic(person_json)
+            send_to_topic(person_json)  # 推送消息到mq
         except Exception as e:
             # 发生错误时回滚
             print(str(e))
