@@ -8,7 +8,7 @@ from com.parttimejob import qq
 from com.parttimejob.mq.Job import Job
 
 queue_name = '/queue/javaqueue'
-topic_name = '/topic/test/javatopic'
+topic_name = '/topic/javatopic'
 listener_name = 'javaListener'
 
 ip = '127.0.0.1'

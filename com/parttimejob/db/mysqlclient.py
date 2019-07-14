@@ -13,8 +13,8 @@ import time
 class MysqlClient(object):
 
     def __init__(self):
-        # self.db = pymysql.connect("127.0.0.1", "cosmo", "cosmo123456", "cosmo")
-        self.db = pymysql.connect("127.0.0.1", "ride_master", "ride_master", "less_credit")
+        self.db = pymysql.connect("127.0.0.1", "cosmo", "cosmo123456", "cosmo")
+        # self.db = pymysql.connect("127.0.0.1", "ride_master", "ride_master", "less_credit")
         # 使用cursor()方法获取操作游标
         self.cursor = self.db.cursor()
 
