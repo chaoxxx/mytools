@@ -31,7 +31,7 @@ class MysqlClient(object):
         e_time = time.mktime(time.strptime(nowTime_str, "%Y-%m-%d"))
         diff = e_time - s_time
 
-        if diff > 10 * 24 * 60 * 60:
+        if diff > 1 * 24 * 60 * 60:
             return -1
 
         # 执行sql语句
