@@ -43,7 +43,7 @@ class MysqlClient(object):
             ser_and_publishtime.strip(),
             str(details[0]).strip(),  # 任务名称
             amt.strip(),
-            str(details[2]).strip(),  # 任务描述
+            str(details[2]).strip()[:500],  # 任务描述
             publish_time,
             job_no
         )
