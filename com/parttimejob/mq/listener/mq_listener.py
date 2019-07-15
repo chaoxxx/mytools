@@ -18,11 +18,12 @@ class MqListener(object):
             job = Job()
             job.__dict__ = myClassReBuild
             message = "【平台】：" + job.web_type + "\n" \
-                                               "【地址】：" + job.url + "\n" \
-                                                                   "【兼职类型】：" + job.type + "\n" \
-                                                                                          "【兼职标题】：" + job.title + "\n" \
-                                                                                                                  "【兼职描述】：" + job.desc + "\n" \
-                                                                                                                                         "【兼职发布时间】：" + job.publishtime
+                      "【地址】：" + job.url + "\n" \
+                      "【兼职类型】：" + job.type + "\n" \
+                      "【兼职标题】：" + job.title + "\n" \
+                      "【金额】：" + job.amt + "\n" \
+                      "【兼职描述】：" + job.desc + "\n" \
+                      "【兼职发布时间】：" + job.publishtime
         else:
             pass
 
