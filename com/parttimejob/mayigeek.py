@@ -1,5 +1,5 @@
 # coding=utf-8
-# 一品威客兼职数据抓取
+# 码易数据抓取
 import json
 import sys
 
