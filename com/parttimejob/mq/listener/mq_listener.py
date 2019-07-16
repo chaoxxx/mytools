@@ -1,8 +1,8 @@
 # coding:UTF-8
 import json
 
-from com.parttimejob import qq
-from com.parttimejob.mq import dev_producer, ad_producer
+from com.parttimejob.channel import qq
+from com.parttimejob.mq import dev_producer
 from com.parttimejob.mq.Job import Job
 
 

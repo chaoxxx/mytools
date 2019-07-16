@@ -2,7 +2,8 @@
 import sys
 import time
 
-from com.parttimejob import qq
+from com.parttimejob import banner
+from com.parttimejob.channel import qq
 from com.parttimejob.mq import dev_producer, ad_producer
 from com.parttimejob.mq.listener.mq_listener import MqListener
 from com.parttimejob.mq.mq_util import MqUtil
@@ -42,6 +43,7 @@ if __name__ == '__main__':
                 mq.conn.subscribe(ad_producer.topic_name)
 
                 qq_groups.add(key, mq)
+                qq.sendMes(key, banner.msg)
 
         time.sleep(60)  # secs
 
