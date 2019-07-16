@@ -23,6 +23,16 @@ class MysqlClient(object):
         self.cursor.close()
         self.db.close()
 
+
+
+    def get_partjob_list(self,start_time,end_time):
+        sql = "select job_no,web_type,job_type,job_title,job_amt,publish_time,job_url from parttimejobinfo where publish_time between '"+start_time+"' and '"+end_time+"' order by job_no"
+        self.cursor.execute(sql)
+
+        return self.cursor.fetchall()
+
+
+
     def insert(self, url, amt, ser_and_publishtime, details, keyword, webtype, job_no):
         mat = re.search(r"(\d{4}-\d{1,2}-\d{1,2} \d{1,2}:\d{1,2})", ser_and_publishtime)
         publish_time = str(mat.group(0))
@@ -70,3 +80,4 @@ class MysqlClient(object):
             self.db.rollback()
 
         return 0
+
