@@ -9,7 +9,7 @@ mysql = MysqlClient()
 
 
 def create_yesterday_excle():
-    yesterday = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+    yesterday = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%Y-%m-%d')
     today = datetime.datetime.now().strftime('%Y-%m-%d')
 
     res = mysql.get_partjob_list(yesterday, today)
@@ -33,7 +33,7 @@ def create_yesterday_excle():
 
 
 def create_seven_day_excle():
-    seven_day = (datetime.datetime.now() + datetime.timedelta(days=7)).strftime('%Y-%m-%d')
+    seven_day = (datetime.datetime.now() - datetime.timedelta(days=7)).strftime('%Y-%m-%d')
     today = datetime.datetime.now().strftime('%Y-%m-%d')
 
     res = mysql.get_partjob_list(seven_day, today)
