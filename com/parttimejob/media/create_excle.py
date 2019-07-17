@@ -19,17 +19,25 @@ def create_yesterday_excle():
 
     col = 0
 
-    ws.write(col, 0, '包名')
-    ws.write(col, 1, '报酬')
-    ws.write(col, 2, '任务链接')
+    ws.write(col, 0, '任务编号')
+    ws.write(col, 1, '平台')
+    ws.write(col, 2, '工作类型')
+    ws.write(col, 3, '任务名')
+    ws.write(col, 4, '报酬')
+    ws.write(col, 5, '发布时间')
+    ws.write(col, 6, '任务链接')
 
     for s in res:
         col += 1
-        ws.write(col, 0, s[3])
-        ws.write(col, 1, s[4])
-        ws.write(col, 2, s[6])
+        ws.write(col, 0, s[0])
+        ws.write(col, 1, s[1])
+        ws.write(col, 2, s[2])
+        ws.write(col, 3, s[3])
+        ws.write(col, 4, s[4])
+        ws.write(col, 5, s[5])
+        ws.write(col, 6, s[6])
 
-    w.save('/tmp/' + yesterday + "全网发包.xlsx")
+    w.save('/root/jianzhixinxitongji/软件类信息汇总/' + yesterday + "/昨日全网发包.xlsx")
 
 
 def create_seven_day_excle():
@@ -58,4 +66,4 @@ def create_seven_day_excle():
 
 if __name__ == '__main__':
     create_yesterday_excle()
-    create_seven_day_excle()
+    # create_seven_day_excle()
