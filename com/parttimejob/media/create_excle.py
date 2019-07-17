@@ -1,5 +1,6 @@
 # coding:utf-8
 import datetime
+import os
 
 from xlwt import Workbook
 
@@ -37,7 +38,12 @@ def create_yesterday_excle():
         ws.write(col, 5, s[5])
         ws.write(col, 6, s[6])
 
-    w.save('/root/jianzhixinxitongji/软件类信息汇总/' + yesterday + "/昨日全网发包.xlsx")
+    rootpath = '/root/jianzhixinxitongji/软件类信息汇总/' + yesterday
+
+    if not os.path.exists(rootpath) :
+        os.makedirs(rootpath)
+
+    w.save(rootpath + "/昨日全网发包.xlsx")
 
 
 def create_seven_day_excle():
