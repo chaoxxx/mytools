@@ -6,9 +6,10 @@ import sys
 import jsonpath
 import requests
 
-from .mysqlclient import MysqlClient
+from com.parttimejob.mysqlclient import MysqlClient
 
-
+reload(sys);
+sys.setdefaultencoding('utf-8')
 def parse(demands, key_word, webtype):
     # 创建数据库链接客户端
     mysql_client = MysqlClient()
