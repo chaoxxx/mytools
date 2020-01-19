@@ -1,10 +1,13 @@
 # coding:utf-8
 import datetime
 import os
-
+import sys
 from xlwt import Workbook
 
 from com.parttimejob.mysqlclient import MysqlClient
+
+reload(sys);
+sys.setdefaultencoding('utf-8')
 
 mysql = MysqlClient()
 
