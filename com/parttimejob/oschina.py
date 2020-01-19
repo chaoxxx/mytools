@@ -16,7 +16,7 @@ def parse(demands, key_word, webtype):
 
     for demand in demands:
         detail_url = "https://zb.oschina.net/project/detail?id=" + str(demand["id"])
-        urla='https://zb.oschina.net/project/detail.html?id='+ str(demand["id"])
+        urla = 'https://zb.oschina.net/project/detail.html?id=' + str(demand["id"])
         # print(detail_url)
 
         headers = {'Accept': 'application/json',
@@ -69,7 +69,7 @@ def parse(demands, key_word, webtype):
                                          key_word, webtype, "oschina-" + projectNo)
 
             if result == -1:
-                print("过期数据不处理",urla)
+                print("过期数据不处理", urla)
                 continue
 
         except Exception as e:

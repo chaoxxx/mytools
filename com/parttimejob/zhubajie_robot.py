@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup
 
 from com.parttimejob.db.mysqlclient import MysqlClient
 
-
 def parse(demands, key_word, webtype):
     # 创建数据库链接客户端
     mysql_client = MysqlClient()
@@ -25,7 +24,8 @@ def parse(demands, key_word, webtype):
             amt = str(amt).replace('元', '')
             els = content.find_all("p", attrs={"class": "clearfix"})
             details = [el.find("span", attrs={"class": "description"}).get_text() for el in els]
-            result = mysql_client.insert(detail_url, amt, user_and_publishtime, details, key_word, webtype,"zbj-"+task_id)
+            result = mysql_client.insert(detail_url, amt, user_and_publishtime, details, key_word, webtype,
+                                         "zbj-" + task_id)
             if result == -1:
                 return result
         except Exception as e:
@@ -58,5 +58,5 @@ if __name__ == '__main__':
         demands = soup.find(id="utopia_widget_6").find_all("a", attrs={"class": "link-detail j-link-detail"})
         if parse(demands, keyword, webtype) == -1:
             break
-            
+
         currentpage += 1

@@ -15,7 +15,7 @@ def parse(demands, key_word, webtype):
     mysql_client = MysqlClient()
 
     for demand in demands:
-        detail_url = "https://codemart.com/project/"+str(demand["id"])
+        detail_url = "https://codemart.com/project/" + str(demand["id"])
         try:
             # 发包人
             publish_user = "未知用户"
@@ -36,12 +36,11 @@ def parse(demands, key_word, webtype):
             timeArray = time.localtime(timeStamp)
             otherStyleTime = time.strftime("%Y-%m-%d %H:%M", timeArray)
 
-
             details = [title, '0', content]
 
             result = mysql_client.insert(detail_url, amt, publish_user + "发布于" + otherStyleTime,
                                          details,
-                                         key_word, webtype,"codemart-"+str(demand["id"]))
+                                         key_word, webtype, "codemart-" + str(demand["id"]))
 
             if result == -1:
                 return result

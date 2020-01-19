@@ -1,20 +1,16 @@
 # coding=utf-8
 # 数据库操作
 import datetime
-import json
 import re
 import time
 
 import pymysql
 
-from com.parttimejob.mq.Job import Job
-from com.parttimejob.mq.dev_producer import send_to_topic
-
 
 class MysqlClient(object):
 
     def __init__(self):
-        self.db = pymysql.connect("127.0.0.1", "cosmo", "cosmo123456", "cosmo")
+        self.db = pymysql.connect("cosmozhu.fun", "cosmo", "cosmo123456", "cosmo")
         # self.db = pymysql.connect("127.0.0.1", "ride_master", "ride_master", "less_credit")
         # 使用cursor()方法获取操作游标
         self.cursor = self.db.cursor()
@@ -23,15 +19,11 @@ class MysqlClient(object):
         self.cursor.close()
         self.db.close()
 
-
-
-    def get_partjob_list(self,start_time,end_time):
-        sql = "select job_no,web_type,job_type,job_title,job_amt,publish_time,job_url from parttimejobinfo where publish_time between '"+start_time+"' and '"+end_time+"' order by job_no"
+    def get_partjob_list(self, start_time, end_time):
+        sql = "select job_no,web_type,job_type,job_title,job_amt,publish_time,job_url from parttimejobinfo where publish_time between '" + start_time + "' and '" + end_time + "' order by job_no"
         self.cursor.execute(sql)
 
         return self.cursor.fetchall()
-
-
 
     def insert(self, url, amt, ser_and_publishtime, details, keyword, webtype, job_no):
         mat = re.search(r"(\d{4}-\d{1,2}-\d{1,2} \d{1,2}:\d{1,2})", ser_and_publishtime)
@@ -62,17 +54,6 @@ class MysqlClient(object):
             self.cursor.execute(sql)
             # 执行sql语句
             self.db.commit()
-            job = Job()
-            job.web_type = webtype
-            job.type = keyword
-            job.title = str(details[0]).strip()
-            job.amt = amt.strip()
-            job.desc = str(details[2]).strip()
-            job.publishtime = publish_time
-            job.url = url.strip()
-            jobDict = job.__dict__
-            person_json = json.dumps(jobDict)  # 转换为json
-            send_to_topic(person_json)  # 推送消息到mq
         except Exception as e:
             # 发生错误时回滚
             print(str(e))
@@ -80,4 +61,3 @@ class MysqlClient(object):
             self.db.rollback()
 
         return 0
-

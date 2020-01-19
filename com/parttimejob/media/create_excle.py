@@ -40,7 +40,7 @@ def create_yesterday_excle():
 
     rootpath = '/root/jianzhixinxitongji/软件类信息汇总/' + yesterday
 
-    if not os.path.exists(rootpath) :
+    if not os.path.exists(rootpath):
         os.makedirs(rootpath)
 
     w.save(rootpath + "/昨日全网发包.xlsx")

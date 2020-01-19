@@ -16,13 +16,12 @@ def parse(demands, key_word, webtype):
 
     for demand in demands:
         try:
-            key_word = demand.find("span",attrs={"class":"skill"}).get_text().strip()
-            demand = demand.find("h4",attrs={"class":"media-heading"}).find("a")
+            key_word = demand.find("span", attrs={"class": "skill"}).get_text().strip()
+            demand = demand.find("h4", attrs={"class": "media-heading"}).find("a")
             detail_url = demand['href']
             task_id = str(detail_url).replace("/projects/", "", 1)
 
-
-            detail_url= "http://www.taskcity.com/projects/"+task_id
+            detail_url = "http://www.taskcity.com/projects/" + task_id
             detail_html = requests.get(detail_url)
             soup = BeautifulSoup(detail_html.text, 'lxml')
 
@@ -44,7 +43,7 @@ def parse(demands, key_word, webtype):
             pattern = re.compile("描述")
             element = soup.find('h3', text=pattern).parent
 
-            content = element.find_all("div",recursive=False)[3].get_text().strip()
+            content = element.find_all("div", recursive=False)[3].get_text().strip()
 
             # 任务发布时间
             pattern = re.compile("发布日期")
@@ -58,7 +57,7 @@ def parse(demands, key_word, webtype):
 
             result = mysql_client.insert(detail_url, amt, publish_user + "发布于" + publish_time + " " + nowTime_str,
                                          details,
-                                         key_word, webtype,"taskcity-"+task_id)
+                                         key_word, webtype, "taskcity-" + task_id)
 
             if result == -1:
                 return result
@@ -81,12 +80,8 @@ if __name__ == '__main__':
     except:
         pass
 
-
     url = "http://www.taskcity.com/projects"
     strhtml = requests.get(url)
     soup = BeautifulSoup(strhtml.text, 'lxml')
     demands = soup.find_all("div", attrs={"class": "panel panel-default"})[1].find_all("div", attrs={"class": "media"})
     parse(demands, keyword, webtype)
-
-
-

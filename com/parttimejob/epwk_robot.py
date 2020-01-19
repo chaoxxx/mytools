@@ -46,7 +46,7 @@ def parse(demands, key_word, webtype):
 
             result = mysql_client.insert(detail_url, amt, publish_user + "发布于" + publish_time + " " + nowTime_str,
                                          details,
-                                         key_word, webtype,"epwk-"+task_id)
+                                         key_word, webtype, "epwk-" + task_id)
 
             if result == -1:
                 return result

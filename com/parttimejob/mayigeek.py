@@ -14,7 +14,7 @@ def parse(demands, key_word, webtype):
     mysql_client = MysqlClient()
 
     for demand in demands:
-        detail_url = "https://www.mayigeek.com/tab/projectDetail?id="+str(demand["id"])
+        detail_url = "https://www.mayigeek.com/tab/projectDetail?id=" + str(demand["id"])
         try:
             # 发包人
             publish_user = "未知用户"
@@ -31,14 +31,13 @@ def parse(demands, key_word, webtype):
             # 任务发布时间
             publish_time = demand['create_date']
 
-            key_word= ",".join(demand['typeStr'])
-
+            key_word = ",".join(demand['typeStr'])
 
             details = [title, '0', content]
 
             result = mysql_client.insert(detail_url, amt, publish_user + "发布于" + publish_time,
                                          details,
-                                         key_word, webtype,"mayigeek-"+str(demand["id"]))
+                                         key_word, webtype, "mayigeek-" + str(demand["id"]))
 
             if result == -1:
                 return result
@@ -61,8 +60,7 @@ if __name__ == '__main__':
     except:
         pass
 
-
-    url="https://www.mayigeek.com/api/public/searchProjects?page=1&perpage=50&statusStr=&price=&teriminal=&bid_end=&order_by=id"
+    url = "https://www.mayigeek.com/api/public/searchProjects?page=1&perpage=50&statusStr=&price=&teriminal=&bid_end=&order_by=id"
     headers = {'Accept': 'application/json, text/plain, */*',
                'Authorization': '',
                'Referer': 'https://www.mayigeek.com/tab/taskList?type=&price=&bidEnd=',
