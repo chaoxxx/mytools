@@ -7,7 +7,7 @@ import jsonpath
 import requests
 from bs4 import BeautifulSoup
 
-from com.parttimejob.db.mysqlclient import MysqlClient
+from .mysqlclient import MysqlClient
 
 
 def parse(demands, key_word, webtype):

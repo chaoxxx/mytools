@@ -4,7 +4,7 @@ import os
 
 from xlwt import Workbook
 
-from com.parttimejob.db.mysqlclient import MysqlClient
+from com.parttimejob.mysqlclient import MysqlClient
 
 mysql = MysqlClient()
 

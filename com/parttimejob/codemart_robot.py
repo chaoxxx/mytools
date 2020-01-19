@@ -7,7 +7,7 @@ import time
 import jsonpath
 import requests
 
-from com.parttimejob.db.mysqlclient import MysqlClient
+from .mysqlclient import MysqlClient
 
 
 def parse(demands, key_word, webtype):
